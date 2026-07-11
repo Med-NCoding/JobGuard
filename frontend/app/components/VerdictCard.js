@@ -3,6 +3,9 @@
 import ScoreGauge from "./ScoreGauge";
 
 function getBadgeStyle(isScam, tier) {
+  if (tier === "SUSPICIOUS" || tier === "UNVERIFIED") {
+    return "bg-warning-soft text-warning";
+  }
   if (isScam) return "bg-danger-soft text-danger";
   return "bg-success-soft text-success";
 }
@@ -13,29 +16,62 @@ export default function VerdictCard({ classification, explanation }) {
   const { is_scam, confidence, verdict_tier, source } = classification;
   const { red_flags, green_flags, verdict_reasoning } = explanation || {};
 
+  // Reconciliation Logic (Option A & B)
+  let displayIsScam = is_scam;
+  let displayConfidence = confidence;
+  let displayTier = verdict_tier;
+  let displayHeading = is_scam ? "Potential Scam Detected" : "Appears Legitimate";
+
+  if (explanation) {
+    const redCount = red_flags?.length || 0;
+    const greenCount = green_flags?.length || 0;
+
+    // Override if explanation flags clearly contradict classifier output
+    if (!is_scam && redCount > greenCount) {
+      displayIsScam = true;
+      displayTier = "SUSPICIOUS";
+      displayConfidence = 0.58; // Adjust to suspicious range
+      displayHeading = "Suspicious Outreach Detected";
+    } else if (is_scam && greenCount > redCount) {
+      displayIsScam = false;
+      displayTier = "UNVERIFIED";
+      displayConfidence = 0.52; // Adjust to neutral range
+      displayHeading = "Unverified Outreach";
+    }
+  }
+
+  // Handle uncertainty threshold band (45% to 60%)
+  const scorePct = Math.round(displayConfidence * 100);
+  if (scorePct >= 45 && scorePct <= 60) {
+    displayHeading = "Uncertain — Review Flags Below";
+    if (displayTier !== "SUSPICIOUS" && displayTier !== "UNVERIFIED") {
+      displayTier = displayIsScam ? "SUSPICIOUS" : "UNVERIFIED";
+    }
+  }
+
+  const borderClass = displayIsScam
+    ? scorePct > 60
+      ? "border-danger/20 bg-danger-soft/40"
+      : "border-warning/20 bg-warning-soft/30"
+    : "border-success/20 bg-success-soft/40";
+
   return (
     <div className="space-y-5">
       {/* Verdict Banner */}
-      <div
-        className={`flex items-center gap-5 rounded-xl p-5 border ${
-          is_scam
-            ? "border-danger/20 bg-danger-soft/40"
-            : "border-success/20 bg-success-soft/40"
-        }`}
-      >
-        <ScoreGauge score={confidence} isScam={is_scam} />
+      <div className={`flex items-center gap-5 rounded-xl p-5 border ${borderClass}`}>
+        <ScoreGauge score={displayConfidence} isScam={displayIsScam} />
 
         <div className="space-y-1">
           <span
             className={`inline-block rounded px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider ${getBadgeStyle(
-              is_scam,
-              verdict_tier
+              displayIsScam,
+              displayTier
             )}`}
           >
-            {verdict_tier.replace(/_/g, " ")}
+            {displayTier.replace(/_/g, " ")}
           </span>
           <h3 className="text-lg font-semibold text-foreground">
-            {is_scam ? "Potential Scam Detected" : "Appears Legitimate"}
+            {displayHeading}
           </h3>
           <p className="text-xs text-muted">
             Analyzed by{" "}
