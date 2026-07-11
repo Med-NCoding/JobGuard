@@ -29,3 +29,8 @@ Thumbs.db
 *.njsproj
 *.sln
 *.swp
+
+# Node / Next.js
+node_modules/
+frontend/.next/
+frontend/node_modules/
