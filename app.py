@@ -78,6 +78,7 @@ class ExplainInput(BaseModel):
 
 class ExplainResponse(BaseModel):
     red_flags: list[str]
+    green_flags: list[str]
     verdict_reasoning: str
 
 class SimulateInput(BaseModel):
@@ -198,11 +199,13 @@ async def explain_verdict(data: ExplainInput):
         if data.is_scam:
             return ExplainResponse(
                 red_flags=["Communication channel redirect (Telegram/WhatsApp)", "Vague high pay rate", "Immediate task offer"],
+                green_flags=[],
                 verdict_reasoning="This message contains typical linguistic patterns found in recruitment scams, including unsolicited high-paying offers and a request to move to text-based chat apps."
             )
         else:
             return ExplainResponse(
                 red_flags=[],
+                green_flags=["Verifiable company identity", "Professional language and communication style"],
                 verdict_reasoning="This message appears standard, referring to a specific corporate identity, standard interview methods, and professional communication patterns."
             )
             
@@ -218,14 +221,28 @@ The classifier has labeled the following message as {verdict_str} with {data.con
 Message:
 \"\"\"{data.message}\"\"\"
 
-Provide:
-1. A list of 2 to 4 bullet points explaining specific "red flags" (if it is a scam) or "green flags" (if it is legit) based strictly on text indicators present in the message (e.g. Telegram handles, check scams, specific company domains, high-pay for basic tasks, professional vs casual grammar). Keep each bullet brief and direct.
-2. A brief, 2-3 sentence overall plain-English reasoning verdict.
+Analyze the message text and identify:
+1. "red_flags": Specific indicators suggesting this message is a SCAM (e.g. Telegram handles, check scams, high-pay for basic tasks, requests phone number/WhatsApp, generic/vague tasks, urgency, or bad grammar).
+2. "green_flags": Specific indicators suggesting this message is REAL, legitimate recruiter/employer outreach (e.g. real company domain, official application links, professional tone, reasonable salary, clear interview process).
+
+Rules:
+- "red_flags" must ONLY contain suspicious or scam-indicative items. Do not put scam indicators under green_flags.
+- "green_flags" must ONLY contain legitimate or safe items. Do not put legitimate markers under red_flags.
+- If there are no green flags or no red flags, return an empty list `[]` for that key.
+- Example: If a message asks to contact someone on Telegram via @handle, that is a red flag. It should go under "red_flags", NEVER under "green_flags".
 
 Output format must be exactly like this JSON block and nothing else:
 {{
-  "red_flags": ["bullet point 1", "bullet point 2"],
-  "verdict_reasoning": "Detailed plain-English summary reasoning paragraph."
+  "red_flags": ["Asks to contact manager on Telegram via @handle", "Absurdly high pay of $300/day for minor tasks"],
+  "green_flags": [],
+  "verdict_reasoning": "This message is a classic task scam that attempts to redirect candidates to Telegram and promises unrealistic daily pay."
+}}
+
+Now analyze the message and output exactly in the JSON format:
+{{
+  "red_flags": [...],
+  "green_flags": [...],
+  "verdict_reasoning": "..."
 }}
 """
         chat_completion = groq_client.chat.completions.create(
@@ -242,12 +259,14 @@ Output format must be exactly like this JSON block and nothing else:
         
         return ExplainResponse(
             red_flags=result.get("red_flags", []),
+            green_flags=result.get("green_flags", []),
             verdict_reasoning=result.get("verdict_reasoning", "No explanation available.")
         )
     except Exception as e:
         logger.error(f"Error in explain endpoint: {e}")
         return ExplainResponse(
             red_flags=["Failed to fetch automated explanation details"],
+            green_flags=[],
             verdict_reasoning=f"System error: {str(e)}. Classification verdict stands."
         )
 

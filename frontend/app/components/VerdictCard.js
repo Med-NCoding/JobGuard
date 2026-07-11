@@ -11,7 +11,7 @@ export default function VerdictCard({ classification, explanation }) {
   if (!classification) return null;
 
   const { is_scam, confidence, verdict_tier, source } = classification;
-  const { red_flags, verdict_reasoning } = explanation || {};
+  const { red_flags, green_flags, verdict_reasoning } = explanation || {};
 
   return (
     <div className="space-y-5">
@@ -58,22 +58,40 @@ export default function VerdictCard({ classification, explanation }) {
         </div>
       )}
 
-      {/* Flags */}
+      {/* Red Flags */}
       {red_flags && red_flags.length > 0 && (
         <div className="space-y-2">
-          <h4 className="text-xs font-semibold uppercase tracking-wider text-muted">
-            {is_scam ? "Red Flags Identified" : "Green Flags"}
+          <h4 className="text-xs font-semibold uppercase tracking-wider text-danger/80">
+            Red Flags Identified
           </h4>
           <ul className="space-y-1.5">
             {red_flags.map((flag, i) => (
               <li
                 key={i}
-                className="flex items-start gap-2.5 text-sm text-foreground/80"
+                className="flex items-start gap-2.5 text-sm text-foreground/80 animate-in fade-in duration-200"
               >
-                <span className="mt-0.5 flex-shrink-0 text-xs">
-                  {is_scam ? "🚨" : "✅"}
-                </span>
-                {flag}
+                <span className="mt-0.5 flex-shrink-0 text-xs">🚨</span>
+                <span>{flag}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* Green Flags */}
+      {green_flags && green_flags.length > 0 && (
+        <div className="space-y-2">
+          <h4 className="text-xs font-semibold uppercase tracking-wider text-success/80">
+            Green Flags Identified
+          </h4>
+          <ul className="space-y-1.5">
+            {green_flags.map((flag, i) => (
+              <li
+                key={i}
+                className="flex items-start gap-2.5 text-sm text-foreground/80 animate-in fade-in duration-200"
+              >
+                <span className="mt-0.5 flex-shrink-0 text-xs">✅</span>
+                <span>{flag}</span>
               </li>
             ))}
           </ul>
