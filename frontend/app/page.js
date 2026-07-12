@@ -85,20 +85,14 @@ export default function Home() {
       <header className="border-b border-border/70 backdrop-blur-md sticky top-0 z-50 bg-background/80">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
 
-          {/* Logo mark */}
-          <div className="flex items-center gap-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-accent/10 ring-1 ring-accent/30 shadow-sm">
-              <svg viewBox="0 0 16 16" fill="none" className="h-4 w-4 text-accent" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M8 1.5 2.5 4.2v4.3C2.5 11.8 5 14 8 14.5 11 14 13.5 11.8 13.5 8.5V4.2L8 1.5z" />
-                <path d="M5.8 8.1l1.4 1.5L10.2 6.5" strokeWidth="1.5" />
-              </svg>
-            </div>
+          {/* Text-only wordmark */}
+          <div className="flex items-center">
             <div>
-              <h1 className="text-sm font-bold tracking-tight text-foreground leading-none">
+              <h1 className="text-[15px] font-extrabold tracking-tight logo-text leading-none">
                 RecruiterCheck
               </h1>
-              <p className="text-[10px] text-muted mt-0.5 tracking-wide">
-                AI · Scam Detection
+              <p className="text-[10px] text-muted mt-0.5 tracking-widest uppercase">
+                AI Scam Detection
               </p>
             </div>
           </div>
@@ -126,7 +120,7 @@ export default function Home() {
         </h2>
         <p className="mx-auto max-w-xl text-sm text-muted leading-relaxed">
           Paste any recruiter email, LinkedIn DM, or job offer below. Our fine-tuned
-          classifier and LLM reasoning engine analyze it in seconds — surfacing red
+          classifier and LLM reasoning engine analyze it in seconds and surface red
           flags before you respond.
         </p>
       </section>
@@ -144,7 +138,7 @@ export default function Home() {
                 Paste Recruiter Message
               </h3>
               <p className="mt-1 text-xs text-muted">
-                Email · LinkedIn DM · SMS · Job posting
+                Works with emails, LinkedIn DMs, SMS messages and job postings
               </p>
             </div>
 
@@ -163,7 +157,7 @@ export default function Home() {
                   <path d="M8 6v3.5M8 11v.5" />
                 </svg>
                 <p className="text-xs text-warning font-medium">
-                  {charCount}/{MIN_CHARS} chars — message is short; add more detail for an accurate result.
+                  {charCount} of {MIN_CHARS} characters. Add more detail for an accurate result.
                 </p>
               </div>
             )}

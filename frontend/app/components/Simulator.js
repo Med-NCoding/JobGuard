@@ -123,9 +123,9 @@ export default function Simulator({ message, isScam }) {
               Scam Escalation Simulator
             </h2>
             <p className="mt-1.5 text-xs text-muted leading-relaxed max-w-lg">
-              Scammers follow a predictable playbook — building trust, moving off-platform,
-              then extracting money. Select a stage below to generate an AI-simulated scammer
-              response, so you know exactly how each tactic sounds before it happens to you.
+              Scammers follow a predictable playbook. They build trust, move the conversation
+              off-platform, then extract money. Select a stage below to generate an AI-simulated
+              scammer response so you know exactly how each tactic sounds before it happens to you.
             </p>
           </div>
           {/* Status pill */}
