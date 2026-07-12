@@ -90,3 +90,59 @@ button, a, input, textarea {
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
+
+/* ════════════════════════════════════════
+   SPLASH / LANDING SCREEN ANIMATIONS
+   ════════════════════════════════════════ */
+
+/* 1. Title drops in from above */
+@keyframes title-drop {
+  0%   { opacity: 0; transform: translateY(-36px) scale(0.94); }
+  60%  { opacity: 1; transform: translateY(4px)   scale(1.01); }
+  100% { opacity: 1; transform: translateY(0)     scale(1);    }
+}
+
+/* 2. Left phrase slides in from the left */
+@keyframes slide-from-left {
+  from { opacity: 0; transform: translateX(-80px); }
+  to   { opacity: 1; transform: translateX(0);     }
+}
+
+/* 3. Right phrase slides in from the right */
+@keyframes slide-from-right {
+  from { opacity: 0; transform: translateX(80px); }
+  to   { opacity: 1; transform: translateX(0);    }
+}
+
+/* 4. Button fades + rises */
+@keyframes btn-rise {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+/* 5. Divider line grows */
+@keyframes line-grow {
+  from { transform: scaleX(0); opacity: 0; }
+  to   { transform: scaleX(1); opacity: 1; }
+}
+
+/* 6. Exit — whole splash fades out + lifts */
+@keyframes splash-exit {
+  0%   { opacity: 1; transform: scale(1)    translateY(0);    }
+  100% { opacity: 0; transform: scale(0.96) translateY(-20px); }
+}
+
+/* 7. Main app content enters from below */
+@keyframes app-enter {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+/* ─── Applied classes ─── */
+.anim-title     { animation: title-drop      0.75s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+.anim-left      { animation: slide-from-left 0.60s cubic-bezier(0.22, 1, 0.36, 1) forwards; opacity: 0; }
+.anim-right     { animation: slide-from-right 0.60s cubic-bezier(0.22, 1, 0.36, 1) forwards; opacity: 0; }
+.anim-btn       { animation: btn-rise        0.50s cubic-bezier(0.22, 1, 0.36, 1) forwards; opacity: 0; }
+.anim-line      { animation: line-grow       0.50s ease forwards; opacity: 0; }
+.anim-exit      { animation: splash-exit     0.55s cubic-bezier(0.4, 0, 1, 1) forwards; }
+.anim-app-enter { animation: app-enter       0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both; }

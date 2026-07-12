@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { classifyMessage, explainVerdict } from "./lib/api";
 import { EXAMPLES } from "./lib/constants";
 import VerdictCard from "./components/VerdictCard";
 import Simulator from "./components/Simulator";
+import LandingScreen from "./components/LandingScreen";
 
 // Minimum character threshold for a meaningful analysis
 const MIN_CHARS = 80;
@@ -21,18 +22,36 @@ const TOO_SHORT_EXPLANATION = {
   red_flags: [],
   green_flags: [],
   verdict_reasoning:
-    "The message is too short to be reliably analyzed. Scam detection requires enough context — " +
-    "recruiter messages typically include a job description, pay, or next steps. " +
+    "The message is too short to be reliably analyzed. Scam detection requires enough context. " +
+    "Recruiter messages typically include a job description, pay rate, or next steps. " +
     "Please paste the full message for an accurate verdict. A neutral score of 55% has been assigned.",
 };
 
 export default function Home() {
+  const [showLanding, setShowLanding] = useState(true);
+  const [entered, setEntered] = useState(false);
   const [message, setMessage]           = useState("");
   const [scanning, setScanning]         = useState(false);
   const [classification, setClassification] = useState(null);
   const [explanation, setExplanation]   = useState(null);
   const [error, setError]               = useState(null);
   const [tooShort, setTooShort]         = useState(false);
+
+  // Allow pressing Enter on the landing screen to proceed
+  useEffect(() => {
+    if (!showLanding) return;
+    function onKey(e) {
+      if (e.key === "Enter") handleEnter();
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showLanding]);
+
+  function handleEnter() {
+    setShowLanding(false);
+    setEntered(true);
+  }
 
   async function handleScan() {
     const trimmed = message.trim();
@@ -79,7 +98,13 @@ export default function Home() {
   const nearThreshold = charCount > 0 && charCount < MIN_CHARS;
 
   return (
-    <div className="flex-1 flex flex-col">
+    <>
+      {/* Splash screen — mounts on top of the app until dismissed */}
+      {showLanding && <LandingScreen onEnter={handleEnter} />}
+
+      {/* Main app — hidden until splash is dismissed */}
+      {!showLanding && (
+        <div className={`flex-1 flex flex-col ${entered ? "anim-app-enter" : ""}`}>
 
       {/* ─── Header ─── */}
       <header className="border-b border-border/70 backdrop-blur-md sticky top-0 z-50 bg-background/80">
@@ -290,5 +315,7 @@ export default function Home() {
         </div>
       </footer>
     </div>
+      )}
+    </>
   );
 }
