@@ -33,7 +33,7 @@ export default function LandingScreen({ onEnter }) {
         {/* 1. RECRUITER CHECK — drops in from top */}
         <div className="anim-title" style={{ animationDelay: "0.05s" }}>
           <h1
-            className="logo-text"
+            className="landing-title"
             style={{
               fontSize: "clamp(2.8rem, 9vw, 6rem)",
               fontWeight: 900,
@@ -151,19 +151,17 @@ export default function LandingScreen({ onEnter }) {
         </p>
       </div>
 
-      {/* Bouncing scroll-down caret at the bottom */}
+      {/* Bouncing chevrons at the bottom — no scroll label */}
       <div
         className="anim-btn absolute bottom-10 flex flex-col items-center gap-1"
         style={{ animationDelay: "1.60s" }}
       >
-        <p className="text-[10px] uppercase tracking-widest text-muted/40 font-medium">Scroll</p>
-        {/* Three stacked chevrons for a cascading bounce */}
         {[0, 150, 300].map((delay) => (
           <svg
             key={delay}
             viewBox="0 0 16 10"
             fill="none"
-            className="anim-caret h-3 w-4 text-accent/30"
+            className="anim-caret h-3 w-4 text-accent/25"
             stroke="currentColor"
             strokeWidth="2"
             strokeLinecap="round"

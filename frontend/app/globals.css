@@ -83,12 +83,19 @@ button, a, input, textarea {
   100% { transform: scale(0.95); box-shadow: 0 0 0 0   rgba(124, 58, 237, 0);    }
 }
 
-/* ─── Wordmark — subtle gradient, not overwhelming ─── */
+/* ─── App header wordmark — very subtle purple gradient ─── */
 .logo-text {
   background: linear-gradient(110deg, #5B21B6 0%, #7C3AED 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+/* ─── Landing screen title — solid dark, Space Grotesk, no gradient ─── */
+.landing-title {
+  font-family: var(--font-display), "Space Grotesk", system-ui, sans-serif;
+  color: #18102E;
+  letter-spacing: -0.03em;
 }
 
 /* ════════════════════════════════════════
