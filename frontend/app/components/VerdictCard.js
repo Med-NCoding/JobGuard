@@ -106,7 +106,10 @@ export default function VerdictCard({ classification, explanation }) {
                 key={i}
                 className="flex items-start gap-2.5 text-sm text-foreground/80 animate-in fade-in duration-200"
               >
-                <span className="mt-0.5 flex-shrink-0 text-xs">🚨</span>
+                <svg viewBox="0 0 16 16" fill="none" className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-danger/80" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="8" cy="8" r="6.5" />
+                  <path d="M8 5v3M8 10.5v.5" />
+                </svg>
                 <span>{flag}</span>
               </li>
             ))}
@@ -118,7 +121,7 @@ export default function VerdictCard({ classification, explanation }) {
       {green_flags && green_flags.length > 0 && (
         <div className="space-y-2">
           <h4 className="text-xs font-semibold uppercase tracking-wider text-success/80">
-            Green Flags Identified
+            Positive Signals
           </h4>
           <ul className="space-y-1.5">
             {green_flags.map((flag, i) => (
@@ -126,7 +129,10 @@ export default function VerdictCard({ classification, explanation }) {
                 key={i}
                 className="flex items-start gap-2.5 text-sm text-foreground/80 animate-in fade-in duration-200"
               >
-                <span className="mt-0.5 flex-shrink-0 text-xs">✅</span>
+                <svg viewBox="0 0 16 16" fill="none" className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-success/80" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="8" cy="8" r="6.5" />
+                  <path d="M5.5 8.2l1.8 1.8 3.2-3.5" />
+                </svg>
                 <span>{flag}</span>
               </li>
             ))}

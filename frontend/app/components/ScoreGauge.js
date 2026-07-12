@@ -24,13 +24,13 @@ export default function ScoreGauge({ score, isScam }) {
     ? animatedScore > 75
       ? "stroke-danger"
       : "stroke-warning"
-    : "stroke-success";
+    : "stroke-accent";
 
   const textColor = isScam
     ? animatedScore > 75
       ? "text-danger"
       : "text-warning"
-    : "text-success";
+    : "text-accent";
 
   return (
     <div className="w-[76px] h-[76px] flex-shrink-0 relative">
