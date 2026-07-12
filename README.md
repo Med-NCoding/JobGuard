@@ -1,4 +1,4 @@
-# JobGuard
+# RecruiterCheck
 AI-powered recruiter scam detection — fine-tuned DistilBERT + LLM reasoning layer.
 
 ## The Problem
@@ -7,7 +7,7 @@ to fake jobs and business opportunities in 2023 alone. As students entering the 
 how easy it is for a convincing DM or email to slip past even a careful applicant.
 
 ## What It Does
-JobGuard takes in pasted messages from supposed recruiters or people offering a position at a company to you, and based on specific scam
+RecruiterCheck takes in pasted messages from supposed recruiters or people offering a position at a company to you, and based on specific scam
 patterns it provides you with an analysis and a score of how likely this message is legit or a scam. Furthermore, it has a scam escalation
 feature which can be used in order to confirm if a person if scammer or not based on if the messages sent to you match that of the traditional
 scammer playbook (in case the analysis is unsure of whether it is a scam or not).
